@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dylan Barnes | Educator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c5f8d;
+            --accent: #d4a574;
+            --text-dark: #2a2a2a;
+            --text-light: #6a6a6a;
+            --bg-light: #fafafa;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.4);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #fafafa 100%);
+            background-attachment: fixed;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        header {
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+        }
+
+        .tagline {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            max-width: 650px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.7;
+        }
+
+        .header-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .header-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .header-link:hover {
+            color: var(--accent);
+        }
+
+        .credentials-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .credential-item {
+            text-align: center;
+        }
+
+        .credential-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .credential-value {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-preview {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .card::after {
+            content: '→';
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: var(--primary);
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            max-height: calc(100vh - 8rem);
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 2.5rem 2.5rem 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .modal-body {
+            padding: 2.5rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: #f0f0f0;
+            color: var(--text-dark);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--primary);
+            font-family: 'Crimson Pro', serif;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .program-item {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .program-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .program-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .program-icon-small {
+            font-size: 1.5rem;
+        }
+
+        .program-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .program-desc {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .program-list {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .program-list li {
+            padding: 0.4rem 0;
+            padding-left: 1.2rem;
+            position: relative;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .program-list li::before {
+            content: '·';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .link-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .link-item {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #f5f5f5;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--primary);
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .link-item:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .timeline-simple {
+            margin: 1.5rem 0;
+        }
+
+        .timeline-year {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .timeline-text {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .section-group {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .simple-list {
+            list-style: none;
+        }
+
+        .simple-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.2rem;
+            position: relative;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .simple-list li::before {
+            content: '·';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .content-card {
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 2rem 3rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .contact-link:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .credentials-section {
+                padding: 0 1rem 1.5rem;
+            }
+
+            .credentials-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+
+            .modal {
+                padding: 1rem;
+            }
+
+            .modal.active {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+
+            .modal-content {
+                max-height: calc(100vh - 4rem);
+            }
+
+            .modal-header,
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dylan Barnes</h1>
+        <p class="subtitle">Educator · Leader · Coach · Learner</p>
+        <p class="tagline">Compassionate and integrity-driven international educator with 15 years of teaching and leadership experience in the U.S. and South Korea. Skilled in computer science instruction, curriculum design, and educational technology integration. Known for fostering inclusive, student-centered learning environments and leading collaborative, school-wide initiatives for impactful change. Values integrity, student autonomy, teacher satisfaction, and positive school and community culture.</p>
+        <div class="header-links">
+            <a href="https://drive.google.com/file/d/1Q1FZXPZnnVuPn_0TwG88Ck2lth8l-a7E/view?usp=drive_link" target="_blank" class="header-link">📄 Download Resume</a>
+            <a href="https://drive.google.com/file/d/1fWV_mIFVeZZWujH42Jip2OD9PZXl_xFg/view?usp=drive_link" target="_blank" class="header-link">📋 Professional Highlights</a>
+            <a href="https://www.linkedin.com/in/dylnbrns" target="_blank" class="header-link">💼 LinkedIn</a>
+            <a href="/cdn-cgi/l/email-protection#d2b0b3a0bcb7a1b6e692b5bfb3bbbefcb1bdbf" class="header-link">✉️ Get in Touch</a>
+        </div>
+    </header>
+
+    <div class="credentials-section">
+        <div class="container">
+            <div class="credentials-grid glass">
+                <div class="credential-item">
+                    <div class="credential-label">Education</div>
+                    <div class="credential-value">Ed.D Curriculum & Instruction</div>
+                    <div class="credential-value">M.Ed Educational Leadership</div>
+                    <div class="credential-value">B.S. Secondary Education</div>
+                </div>
+                <div class="credential-item">
+                    <div class="credential-label">Illinois Certifications</div>
+                    <div class="credential-value">Principal (K-Age 22)</div>
+                    <div class="credential-value">Teacher Leader (K-Age 22)</div>
+                    <div class="credential-value">Computer Science (G5-12)</div>
+                    <div class="credential-value">Technology Education (G5-12)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <div class="card glass" onclick="openModal('teaching')">
+            <span class="card-icon">📚</span>
+            <div class="card-title">Teaching & Student Success</div>
+            <div class="card-preview">AP Computer Science pass rates, curriculum design, student outcomes</div>
+        </div>
+
+        <div class="card glass" onclick="openModal('leadership')">
+            <span class="card-icon">📋</span>
+            <div class="card-title">Leadership & Systems</div>
+            <div class="card-preview">Task forces, committees, policy development</div>
+        </div>
+
+        <div class="card glass" onclick="openModal('athletics')">
+            <span class="card-icon">⛹️</span>
+            <div class="card-title">Athletics & Coaching</div>
+            <div class="card-preview">Championships, program building, analytics dashboard</div>
+        </div>
+
+        <div class="card glass" onclick="openModal('programs')">
+            <span class="card-icon">⚙️</span>
+            <div class="card-title">Programs Built</div>
+            <div class="card-preview">Robotics, coding competitions, film photography, marine engineering</div>
+        </div>
+
+        <div class="card glass" onclick="openModal('professional-dev')">
+            <span class="card-icon">📖</span>
+            <div class="card-title">Professional Development</div>
+            <div class="card-preview">CSTA, SIGCSE, ISTE, WASC, DEIJ training, AI in education</div>
+        </div>
+
+        <div class="card glass" onclick="openModal('press')">
+            <span class="card-icon">📰</span>
+            <div class="card-title">Press & Recognition</div>
+            <div class="card-preview">Tampa Bay Times, Film Photography Project, school features</div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Dylan Barnes</p>
+    </footer>
+
+    <!-- Teaching Modal -->
+    <div id="teaching" class="modal" onclick="closeModalOnBackdrop(event, 'teaching')">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('teaching')">×</button>
+            <div class="modal-header">
+                <div class="modal-title">Teaching & Student Success</div>
+                <div class="modal-subtitle">Busan Foreign School · 2018–Present (8 years)</div>
+            </div>
+            <div class="modal-body">
+                <div class="section-group" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--primary); margin-bottom: 2rem;">
+                    <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 600; margin-bottom: 0.75rem;">Teaching Philosophy</div>
+                    <p style="color: var(--text-dark); line-height: 1.7; font-style: italic;">I believe in creating authentic learning experiences where students develop both technical skills and critical thinking. Success is measured not just by test scores, but by students' ability to approach problems creatively, persist through challenges, and see themselves as capable learners.</p>
+                </div>
+
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-desc">AP pass rate in 5 of 7 years (above global averages)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">6×</div>
+                        <div class="stat-desc">College Board Female Diversity Award (2018–2024)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-desc">Student satisfaction across all courses</div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Courses Taught</div>
+                    <ul class="simple-list">
+                        <li>AP Computer Science A & Principles</li>
+                        <li>Introduction to Computer Science (Python Programming)</li>
+                        <li>Middle School Computer Science</li>
+                        <li>Yearbook & Digital Media</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Technical Skills & Software</div>
+                    <ul class="simple-list">
+                        <li>Computer Programming: Java, Python, JavaScript</li>
+                        <li>Robotics: VEX, Makeblock, Edison, Lego, Finch</li>
+                        <li>Microsoft Office & Google Suite</li>
+                        <li>Adobe Creative Suite</li>
+                        <li>AI Tools & Instructional Technology</li>
+                        <li>Yearbook Design</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Curriculum Development</div>
+                    <p style="color: var(--text-light); line-height: 1.6;">Led creation and ongoing refinement of curriculum pathways across MS/HS CS programs using Understanding by Design framework. Expanded offerings to include opportunities at elementary level through service-based projects. Focus on hands-on, inquiry-based, authentic learning experiences.</p>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Student Outcomes</div>
+                    <ul class="program-list" style="margin-bottom: 1rem;">
+                        <li>Student-created iOS app published on Apple App Store</li>
+                        <li>Multiple students pursuing CS degrees at university</li>
+                        <li>Female students in AP CSP are 5× more likely to major in CS</li>
+                    </ul>
+                    <div class="link-list">
+                        <a href="https://busanforeignschool.org/2024/02/29/bfs-grade-12-student-creates-app/" target="_blank" class="link-item">Student App Feature</a>
+                        <a href="https://busanforeignschool.org/2024/03/15/bfs-earns-the-college-boards-ap-computer-science-female-diversity-award-once-again/" target="_blank" class="link-item">Diversity Award 2024</a>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Previous Experience</div>
+                    <p style="color: var(--text-light); margin-bottom: 0.5rem;"><strong>Gulf Coast Academy, Florida (2011–2018, 7 years)</strong></p>
+                    <p style="color: var(--text-light); line-height: 1.6;">Technology Teacher & Department Chair. Designed and implemented comprehensive, interdisciplinary STEM curriculum for grades 6-8. Advised four teachers within the department.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leadership Modal -->
+    <div id="leadership" class="modal" onclick="closeModalOnBackdrop(event, 'leadership')">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('leadership')">×</button>
+            <div class="modal-header">
+                <div class="modal-title">Leadership & Systems</div>
+                <div class="modal-subtitle">Building Infrastructure for Others</div>
+            </div>
+            <div class="modal-body">
+                <div class="section-group" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--primary); margin-bottom: 2rem;">
+                    <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 600; margin-bottom: 0.75rem;">Leadership Philosophy</div>
+                    <p style="color: var(--text-dark); line-height: 1.7; font-style: italic;">Effective leadership means building and supporting data-driven, iterative systems that empower others. My approach centers on empathy, transparency, collaboration, and teacher advocacy. I believe in creating structures that support educators so they can focus on what matters most: student learning.</p>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Task Forces</div>
+                    <ul class="simple-list" style="margin-bottom: 1rem;">
+                        <li>Innovation Taskforce (Renovation) - 2023</li>
+                        <li>Student Behavior Taskforce - 2024-2025</li>
+                        <li>Grading & Reassessment Taskforce - 2024-2025</li>
+                    </ul>
+                    <p style="color: var(--text-light); line-height: 1.6;"><strong>Outcomes:</strong> Led teacher advocacy resulting in stipend increases for existing roles, creation of new stipend roles, and doctorate stipend. Developed tiered behavior/discipline system and handbook. Created grading and reassessment policy revisions. School renovation planning through Innovation Taskforce trip to Hong Kong (visited HKIS, Harbour School, ISF, Chinese International School).</p>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">School Committees</div>
+                    <ul class="simple-list" style="margin-bottom: 1rem;">
+                        <li>Academic Advisory Committee (2023–Present)</li>
+                        <li>HS Division Lead & Teacher Leadership Representative (2022–2024)</li>
+                        <li>Computer Science Department Head (2022–Present)</li>
+                        <li>WASC Committee Chair (Category A: A3, A4, A5)</li>
+                        <li>WASC Visiting Committee Member - Full Cycle, NIVA American School Bangkok, Thailand (2022)</li>
+                        <li>WASC Mid-Cycle Visit - NIVA American School Bangkok, Thailand (March 2026)</li>
+                    </ul>
+                    <p style="color: var(--text-light); line-height: 1.6;">Feedback as HS Division Lead highlighted trust, approachability, clear communication, and teacher advocacy. Pushed for transparency through community survey data sharing.</p>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Community & Extracurricular</div>
+                    <ul class="simple-list">
+                        <li>HS Community Service Hour Coordinator (2024–Present)</li>
+                        <li>HS Advisor (2018–2023)</li>
+                        <li>HS Student Council Advisor (2018–2021)</li>
+                        <li>VEX Robotics, CS Honor Society, Hack Club Advisor</li>
+                        <li>8–10 recommendation letters per year</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Programs Modal -->
+    <div id="programs" class="modal" onclick="closeModalOnBackdrop(event, 'programs')">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('programs')">×</button>
+            <div class="modal-header">
+                <div class="modal-title">Programs Built From Scratch</div>
+                <div class="modal-subtitle">Florida & South Korea · 2011–Present</div>
+            </div>
+            <div class="modal-body">
+                <div class="section-group" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--primary); margin-bottom: 2rem;">
+                    <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 600; margin-bottom: 0.75rem;">Program Building Philosophy</div>
+                    <p style="color: var(--text-dark); line-height: 1.7; font-style: italic;">The best programs start small and grow organically. I believe in meeting students where they are, building incrementally, and trusting the process. One interested student can become a competitive team; one idea can become a thriving community.</p>
+                </div>
+
+                <div class="program-item">
+                    <div class="program-header">
+                        <span class="program-icon-small">🤖</span>
+                        <div class="program-name">Robotics Program</div>
+                    </div>
+                    <p class="program-desc">Started with one student interested in robotics. Built year-by-year into competitive tournament team.</p>
+                    <ul class="program-list">
+                        <li>First KISAC Robotics Tournament at St. Johnsbury Academy Jeju (2026)</li>
+                        <li>Sportsmanship Award at inaugural competition</li>
+                        <li>12th place out of 18 teams, 3 wins in first tournament</li>
+                    </ul>
+                    <div class="link-list">
+                        <a href="https://busanforeignschool.org/2026/01/27/bfs-robotics-kisac-tournament/" target="_blank" class="link-item">Tournament Feature</a>
+                        <a href="https://busanforeignschool.org/2024/11/19/coding-robotics-bfs/" target="_blank" class="link-item">Program Overview</a>
+                    </div>
+                </div>
+
+                <div class="program-item">
+                    <div class="program-header">
+                        <span class="program-icon-small">📷</span>
+                        <div class="program-name">Film Photography Club</div>
+                    </div>
+                    <p class="program-desc">After-school film photography program at Gulf Coast Academy. Built school darkroom, partnered with Film Photography Project School Donation Program.</p>
+                    <ul class="program-list">
+                        <li>Students learned 35mm SLR shooting, developing, and printing</li>
+                        <li>Annual photo exhibitions with community events</li>
+                        <li>Featured by Film Photography Project and Tampa Bay Times</li>
+                    </ul>
+                    <div class="link-list">
+                        <a href="https://filmphotographyproject.com/gulf-coast-academy-student-photo-exhibition/" target="_blank" class="link-item">FPP Feature</a>
+                        <a href="https://www.tampabay.com/news/education/k12/gulf-coast-academy-students-take-a-step-back-in-time-in-film-photography/2258066/" target="_blank" class="link-item">Tampa Bay Times</a>
+                    </div>
+                </div>
+
+                <div class="program-item">
+                    <div class="program-header">
+                        <span class="program-icon-small">🔧</span>
+                        <div class="program-name">Underwater ROV Engineering</div>
+                    </div>
+                    <p class="program-desc">Technology program unit at Gulf Coast Academy. Students soldered and waterproofed electronics, constructed PVC submarines for regional competitions.</p>
+                    <ul class="program-list">
+                        <li>Hands-on application of physics and engineering principles</li>
+                        <li>Local media coverage of student innovation</li>
+                    </ul>
+                    <div class="link-list">
+                        <a href="https://www.tampabay.com/news/education/k12/gulf-coast-academy-students-prepare-remote-controlled-submarines-for/2221933/" target="_blank" class="link-item">Tampa Bay Times</a>
+                    </div>
+                </div>
+
+                <div class="program-item">
+                    <div class="program-header">
+                        <span class="program-icon-small">📸</span>
+                        <div class="program-name">Media Day for Student-Athletes</div>
+                    </div>
+                    <p class="program-desc">Professional photography sessions for all sports teams. Provided headshots and action photos for athlete profiles and school promotions.</p>
+                </div>
+
+                <div class="program-item">
+                    <div class="program-header">
+                        <span class="program-icon-small">💻</span>
+                        <div class="program-name">Hack Club</div>
+                    </div>
+                    <p class="program-desc">Internationally-backed nonprofit student coding club. Student-led community building projects and organizing hackathons.</p>
+                    <ul class="program-list">
+                        <li>ScrapYard Hackathon - First-ever school hackathon (March 2025)</li>
+                        <li>Student-driven project development and collaboration</li>
+                        <li>Part of global Hack Club network</li>
+                    </ul>
+                    <div class="link-list">
+                        <a href="https://busanforeignschool.org/2025/03/19/bfs-hosts-first-ever-scrapyard-hackathon/" target="_blank" class="link-item">BFS ScrapYard Feature</a>
+                        <a href="https://www.donga.com/news/It/article/all/20250328/131302421/1" target="_blank" class="link-item">Donga Ilbo Coverage</a>
+                        <a href="https://hackclub.com/clubs/" target="_blank" class="link-item">Hack Club Network</a>
+                    </div>
+                </div>
+
+                <div class="program-item">
+                    <div class="program-header">
+                        <span class="program-icon-small">🏆</span>
+                        <div class="program-name">CS Honor Society</div>
+                    </div>
+                    <p class="program-desc">Founded CSTA-backed Computer Science Honor Society. Student-led group organizing and running school-wide and nationwide coding competitions across all grade levels.</p>
+                    <ul class="program-list">
+                        <li>Codementum International Competition (2022–Present, HS/MS/ES divisions annually)</li>
+                        <li>Firia Labs Halloween Coding Competition (2023)</li>
+                        <li>Inisio Hackathon participation (2023)</li>
+                        <li>CS tutoring for students needing support</li>
+                    </ul>
+                </div>
+
+                <div class="program-item">
+                    <div class="program-header">
+                        <span class="program-icon-small">🌍</span>
+                        <div class="program-name">Global Coding Competition Results</div>
+                    </div>
+                    <p class="program-desc">Codementum International Competition · 2022–Present</p>
+                    <div class="timeline-simple">
+                        <div class="timeline-year">2022–2023</div>
+                        <div class="timeline-text">
+                            <strong>1st Place Worldwide</strong><br>
+                            57,206 students · 2,129 schools · 133 countries
+                        </div>
+
+                        <div class="timeline-year">2023–2024</div>
+                        <div class="timeline-text">
+                            <strong>7th Place Worldwide</strong><br>
+                            ~60,000 students · ~2,200 schools · 135 countries
+                        </div>
+
+                        <div class="timeline-year">2025–2026</div>
+                        <div class="timeline-text">
+                            <strong>4th Place Worldwide</strong><br>
+                            144,000+ students · 136 countries<br>
+                            Third top-10 finish in four years
+                        </div>
+                    </div>
+                    <div class="link-list">
+                        <a href="https://busanforeignschool.org/2026/01/13/busan-foreign-school-international-coding-competition/" target="_blank" class="link-item">4th Place (2025)</a>
+                        <a href="https://busanforeignschool.org/2024/03/15/codementum-coding-competition-1st-place-in-the-hs-division/" target="_blank" class="link-item">1st Place (2022)</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Athletics Modal -->
+    <div id="athletics" class="modal" onclick="closeModalOnBackdrop(event, 'athletics')">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('athletics')">×</button>
+            <div class="modal-header">
+                <div class="modal-title">Athletics & Coaching</div>
+                <div class="modal-subtitle">MS & HS Basketball, Volleyball, Futsal</div>
+            </div>
+            <div class="modal-body">
+                <div class="section-group" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--primary); margin-bottom: 2rem;">
+                    <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 600; margin-bottom: 0.75rem;">Coaching Philosophy</div>
+                    <p style="color: var(--text-dark); line-height: 1.7; font-style: italic;">Coaching is teaching. Whether on the court or in the classroom, the same principles apply: set high expectations, build systems for success, trust the process. Success comes from iteration, practice, and a commitment to continuous improvement.</p>
+                </div>
+
+                <div class="section-group" style="background: linear-gradient(135deg, #f0f4f8 0%, #fafafa 100%); padding: 1.5rem; border-radius: 12px; border: 1px solid #e0e0e0; margin-bottom: 2rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <span style="font-size: 2rem;">📊</span>
+                        <div>
+                            <div style="font-size: 1.2rem; font-weight: 600; color: var(--text-dark); margin-bottom: 0.25rem;">The Arc — Coaching Analytics Dashboard</div>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">Comprehensive data visualization of 7 school years, 15 seasons, and 3 sports</div>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-light); margin-bottom: 1rem; line-height: 1.6;">Interactive dashboard featuring year-over-year trajectories, program building trends, competition level analysis, opponent breakdowns, and head-to-head records. Personally built to track coaching career progression and inform strategic decisions.</p>
+                    <a href="https://nowdeveloping.github.io/the-arc/" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s ease;">Launch Dashboard →</a>
+                </div>
+
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">9</div>
+                        <div class="stat-desc">First place finishes in basketball (Head & Assistant Coach)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">7</div>
+                        <div class="stat-desc">Podium finishes in volleyball (Head & Assistant Coach)</div>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <p style="color: var(--text-light); line-height: 1.6;">Actively recruited and supported highest athletics participation rates in school history.</p>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Certifications</div>
+                    <ul class="simple-list">
+                        <li>CPR Certified</li>
+                        <li>REC Foundation Coaching Certification (VEX Robotics)</li>
+                        <li>Coaching Principles (Human Kinetics)</li>
+                        <li>Art of Coaching Volleyball - Premium Member</li>
+                        <li>NFHS Sportsmanship Training</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Development Modal -->
+    <div id="professional-dev" class="modal" onclick="closeModalOnBackdrop(event, 'professional-dev')">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('professional-dev')">×</button>
+            <div class="modal-header">
+                <div class="modal-title">Professional Development</div>
+                <div class="modal-subtitle">Continuous Learning & Growth</div>
+            </div>
+            <div class="modal-body">
+                <div class="section-group" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--primary); margin-bottom: 2rem;">
+                    <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 600; margin-bottom: 0.75rem;">Professional Development Philosophy</div>
+                    <p style="color: var(--text-dark); line-height: 1.7; font-style: italic;">Lifelong learning isn't optional, it's essential. I pursue growth through diverse personal and professional experiences. Every learning opportunity makes me a better educator and person.</p>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Education</div>
+                    <ul class="simple-list">
+                        <li><strong>Ed.D in Curriculum & Instruction</strong>, Southeastern University, Lakeland, FL (2015-2018) - Kappa Delta Pi, International Educators Honor Society</li>
+                        <li><strong>M.Ed Educational Leadership</strong>, Saint Leo University, Saint Leo, FL (2013-2015)</li>
+                        <li><strong>B.S. Secondary Social Science Education</strong>, University of South Florida, Tampa, FL (2008-2011)</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Illinois Teaching Certifications</div>
+                    <ul class="simple-list">
+                        <li>Illinois Principal (K-Age 22)</li>
+                        <li>Teacher Leader (K-Age 22)</li>
+                        <li>Technology Education (G5-12)</li>
+                        <li>Computer Science (G5-12)</li>
+                        <li>Computer Applications (G5-12)</li>
+                        <li>Social Science (G5-12)</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Professional Affiliations</div>
+                    <ul class="simple-list">
+                        <li>ACM SIGCSE Member (Association for Computing Machinery - Computer Science Education)</li>
+                        <li>CSTA+ Member (Computer Science Teachers Association)</li>
+                        <li>ISTE Member (International Society for Technology in Education)</li>
+                        <li>Art of Coaching Volleyball Premium Member</li>
+                        <li>Coach Mac Basketball Member</li>
+                        <li>CodeHS Certified Educator</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Recent Professional Development (2024-2026)</div>
+                    <ul class="program-list">
+                        <li>Google Gemini Certified Educator (2025)</li>
+                        <li>Google AI for K12 Educators (2025)</li>
+                        <li>WASC Mid-Cycle Visit Training (2025)</li>
+                        <li>EARCOS Conference, International School of Kuala Lumpur (2025)</li>
+                        <li>Khan Academy Khanmigo AI Training (2025)</li>
+                        <li>Successful Phone-Free Schools - Hearing From Youth (2025)</li>
+                        <li>CPR Training (2024)</li>
+                        <li>REC Foundation Coaching Summit (2024)</li>
+                        <li>REC Foundation Coaching Certification (2024)</li>
+                        <li>The Art of Coaching Volleyball Comprehensive Coaching Course (2024)</li>
+                        <li>Restorative Circles with Juan Sheblak (2024)</li>
+                        <li>DEIJ Training with Juan Sheblak - Leadership (2024)</li>
+                        <li>DEIJ Training with Juan Sheblak - All Staff (2024)</li>
+                        <li>AI For Education (2024)</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Computer Science & Pedagogy</div>
+                    <ul class="program-list">
+                        <li>CodeHS AI in the Classroom (2025)</li>
+                        <li>CS Unplugged Methodology (2024)</li>
+                        <li>CodeHS Microcredential - Java Level 1 (2024)</li>
+                        <li>SHEroes: Celebrating Women in Tech (2024)</li>
+                        <li>CSTA CS EdWeek Preview (2023)</li>
+                        <li>Advance Kentucky APCSP Master Class Session 1 (2023)</li>
+                        <li>Advance Kentucky APCSP Master Class Session 2 (2023)</li>
+                        <li>Advance Kentucky APCSP Master Class Session 3 (2023)</li>
+                        <li>Advance Kentucky APCSP Master Class Session 4 (2023)</li>
+                        <li>Advance Kentucky APCSP Master Class Session 5 (2023)</li>
+                        <li>Advance Kentucky APCSP Master Class Session 6 (2023)</li>
+                        <li>Advance Kentucky APCSP Master Class Session 7 (2023)</li>
+                        <li>APCSP Course Checklist with CodeHS (2023)</li>
+                        <li>Building a Comprehensive K-12 Pathway at Your School (2023)</li>
+                        <li>CSTA Identity Inclusion for K12 CS Educators (2023)</li>
+                        <li>College Board What Students and Teachers are Saying about APCSP (2022)</li>
+                        <li>College Board What Students and Teachers are Saying about APCSA (2022)</li>
+                        <li>Harvard CS50 APCSP (2022)</li>
+                        <li>College Board APCSP Grade Like an AP Reader (2022)</li>
+                        <li>CSTA Identities and Belonging in CS (2021)</li>
+                        <li>CSTA Native American Heritage Month (2021)</li>
+                        <li>CSTA Reflective Teachers Seminar (2021)</li>
+                        <li>CSTA Cultivating a Community of Learners (2021)</li>
+                        <li>CSTA Annual Conference (2021)</li>
+                        <li>College Board APCSP Summer Institute - Naples (2019)</li>
+                        <li>College Board APCSA Summer Institute - Miami (2018)</li>
+                        <li>Florida ESE Professional Development Course (2018)</li>
+                        <li>CodeHS Professional Development Course (2017)</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">WASC Accreditation Work</div>
+                    <ul class="program-list">
+                        <li>WASC Visiting Committee Member - NIVA American School Bangkok (2022)</li>
+                        <li>WASC Training (2021)</li>
+                        <li>WASC Committee Chair for Category A (A3, A4, A5) (2020)</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Leadership & Instructional Design</div>
+                    <ul class="program-list">
+                        <li>DEIJ with Lauren Amoros (2024)</li>
+                        <li>Fostering Belonging (2022)</li>
+                        <li>CSTA Identities and Belonging in CS (2021)</li>
+                        <li>Authentic Assessments with Jay McTighe - Chapters International (2021)</li>
+                        <li>Seoul of a Leader (2021)</li>
+                        <li>Culturally Responsive Instruction (2021)</li>
+                        <li>Creating a Culture of Thinking - Chapters International (2019)</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-card-title">Presentations & Workshops</div>
+                    <ul class="program-list" style="margin-bottom: 1rem;">
+                        <li><strong>Practical AI for Teachers</strong> - Co-presented with Michael Gates (April 18, 2026)</li>
+                    </ul>
+                    <div class="link-list">
+                        <a href="Practical_AI_for_Teachers.pptx" download class="link-item">Download Slides</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Press Modal -->
+    <div id="press" class="modal" onclick="closeModalOnBackdrop(event, 'press')">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('press')">×</button>
+            <div class="modal-header">
+                <div class="modal-title">Press & Recognition</div>
+                <div class="modal-subtitle">Media Coverage</div>
+            </div>
+            <div class="modal-body">
+                <div class="section-group" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--primary); margin-bottom: 2rem;">
+                    <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 600; margin-bottom: 0.75rem;">On Recognition</div>
+                    <p style="color: var(--text-dark); line-height: 1.7; font-style: italic;">Media coverage reflects the collective work of students, colleagues, and community. These features document not individual achievement, but the impact of programs, student innovation, and collaborative effort.</p>
+                </div>
+
+                <div class="section-group">
+                    <div class="section-title">2026</div>
+                    <ul class="simple-list">
+                        <li><a href="https://busanforeignschool.org/2026/01/27/bfs-robotics-kisac-tournament/" target="_blank" style="color: var(--primary); text-decoration: none;">BFS Robotics Debuts at KISAC Tournament</a> · Busan Foreign School · January 27, 2026</li>
+                        <li><a href="https://busanforeignschool.org/2026/01/13/busan-foreign-school-international-coding-competition/" target="_blank" style="color: var(--primary); text-decoration: none;">4th Place Worldwide in International Coding Competition</a> · Busan Foreign School · January 13, 2026</li>
+                    </ul>
+                </div>
+
+                <div class="section-group">
+                    <div class="section-title">2025</div>
+                    <ul class="simple-list">
+                        <li><a href="https://www.donga.com/news/It/article/all/20250328/131302421/1" target="_blank" style="color: var(--primary); text-decoration: none;">BFS Students Showcase Creativity at First ScrapYard Hackathon</a> · Donga Ilbo · March 28, 2025</li>
+                        <li><a href="https://busanforeignschool.org/2025/03/19/bfs-hosts-first-ever-scrapyard-hackathon/" target="_blank" style="color: var(--primary); text-decoration: none;">BFS Hosts First-Ever ScrapYard Hackathon</a> · Busan Foreign School · March 19, 2025</li>
+                    </ul>
+                </div>
+
+                <div class="section-group">
+                    <div class="section-title">2024</div>
+                    <ul class="simple-list">
+                        <li><a href="https://busanforeignschool.org/2024/11/19/coding-robotics-bfs/" target="_blank" style="color: var(--primary); text-decoration: none;">Leading Innovation in Coding and Robotics at BFS</a> · Busan Foreign School · November 19, 2024</li>
+                        <li><a href="https://busanforeignschool.org/2024/03/15/codementum-coding-competition-1st-place-in-the-hs-division/" target="_blank" style="color: var(--primary); text-decoration: none;">Codementum Coding Competition - 1st Place in HS Division</a> · Busan Foreign School · March 15, 2024</li>
+                        <li><a href="https://busanforeignschool.org/2024/03/15/bfs-earns-the-college-boards-ap-computer-science-female-diversity-award-once-again/" target="_blank" style="color: var(--primary); text-decoration: none;">BFS Earns College Board AP Computer Science Female Diversity Award</a> · Busan Foreign School · March 15, 2024</li>
+                        <li><a href="https://busanforeignschool.org/2024/02/29/bfs-grade-12-student-creates-app/" target="_blank" style="color: var(--primary); text-decoration: none;">BFS Grade 12 Student Creates iOS App</a> · Busan Foreign School · February 29, 2024</li>
+                        <li><a href="https://busanforeignschool.org/2024/02/29/college-board-ap-computer-science-principles-female-diversity-award-2023/" target="_blank" style="color: var(--primary); text-decoration: none;">College Board AP Computer Science Principles Female Diversity Award 2023</a> · Busan Foreign School · February 29, 2024</li>
+                    </ul>
+                </div>
+
+                <div class="section-group">
+                    <div class="section-title">2018</div>
+                    <ul class="simple-list">
+                        <li><a href="https://filmphotographyproject.com/gulf-coast-academy-student-photo-exhibition/" target="_blank" style="color: var(--primary); text-decoration: none;">Gulf Coast Academy Student Photo Exhibition</a> · Film Photography Project · January 1, 2018</li>
+                    </ul>
+                </div>
+
+                <div class="section-group">
+                    <div class="section-title">2016</div>
+                    <ul class="simple-list">
+                        <li><a href="https://www.tampabay.com/news/education/k12/gulf-coast-academy-students-take-a-step-back-in-time-in-film-photography/2258066/" target="_blank" style="color: var(--primary); text-decoration: none;">Gulf Coast Academy Students Take a Step Back in Time in Film Photography</a> · Tampa Bay Times · 2016</li>
+                        <li><a href="https://www.tampabay.com/news/education/k12/gulf-coast-academy-students-prepare-remote-controlled-submarines-for/2221933/" target="_blank" style="color: var(--primary); text-decoration: none;">Gulf Coast Academy Students Prepare Remote-Controlled Submarines for Competition</a> · Tampa Bay Times · 2016</li>
+                    </ul>
+                </div>
+
+                <div class="section-group">
+                    <p style="color: var(--text-light); font-size: 0.9rem; font-style: italic; margin-top: 2rem;">This section serves as a comprehensive bibliography of all media coverage and press features related to programs, student achievements, and educational initiatives.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeModalOnBackdrop(event, id) {
+            if (event.target.classList.contains('modal')) {
+                closeModal(id);
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const activeModal = document.querySelector('.modal.active');
+                if (activeModal) {
+                    activeModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
